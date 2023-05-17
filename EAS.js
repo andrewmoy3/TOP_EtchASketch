@@ -25,9 +25,9 @@ function createGrid(size){
         for(let j=0;j<size;j++){
             let square = document.createElement("div");
             square.className = "square";
+            square.style.backgroundColor = "rgb(255,255,255)";
             divContainer.appendChild(square);
             square.onmouseover = function(){
-                // square.classList.add("selected")
                 switch(mode) {
                     case "black":
                         square.style.backgroundColor = "black";
@@ -35,6 +35,13 @@ function createGrid(size){
                     case "rainbow":
                         square.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16);
                         break;
+                    case "shade":
+                        const rgb = window.getComputedStyle(square).backgroundColor;
+                        colors = rgb.match(/\d+/g).map(Number);
+                        for(let i=0;i<3;i++){
+                            colors[i] -= 25.5;
+                        }
+                        square.style.backgroundColor = "rgb("+colors[0]+","+colors[1]+","+colors[2]+")";
                     default:
                       // code block
                 }
@@ -65,6 +72,17 @@ function makeButtons(){
         }
     };
     buttons.appendChild(rainbow);
+
+    const shade = document.createElement("button");
+    shade.textContent = "Shade Mode";
+    shade.onclick = function(){
+        if(mode == "shade"){
+            mode = "black";
+        }else{
+            mode = "shade";
+        }
+    };
+    buttons.appendChild(shade);
 }
 
 
